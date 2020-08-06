@@ -2,27 +2,52 @@ import React from 'react';
 
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg'
 
-import './styles.css'
+import './styles.css';
+import api from '../../services/api';
 
-function TeacherItem() {
+export interface Teacher{
+        id: number;
+        avatar: string;
+        bio: string;
+        cost: number;
+        name: string;
+        subject: string;
+        whatsapp: string;
+}
+
+
+interface TeacherItemProps{
+    teacher: Teacher;
+}
+
+const TeacherItem: React.FC<TeacherItemProps> = ({teacher})=> {
+    function createNewConnection(){
+        api.post('connections', {
+            user_id: teacher.id,
+        })
+    }
+
     return (
         <article className="teacher-item">
             <header>
-                <img src="https://scontent.fqbx2-1.fna.fbcdn.net/v/t1.0-9/107811261_3244453408952893_100703356549089656_n.jpg?_nc_cat=107&_nc_sid=09cbfe&_nc_ohc=qA9y5XfiN3YAX9C9ZrQ&_nc_ht=scontent.fqbx2-1.fna&oh=8edb3267a8da11bedcd8c8d48ab71b52&oe=5F4EC29D" alt="Jessica Marques" />
+                <img src={teacher.avatar}alt={teacher.name} />
                 <div>
-                    <strong>Jessica Marques</strong>
-                    <span>História</span>
+                    <strong>{teacher.name}</strong>
+                    <span>{teacher.subject}</span>
                 </div>
             </header>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus, mi vel semper faucibus, eros risus pretium eros, in consequat dolor sem sit amet arcu. <br /><br />Morbi porta cursus lectus quis pellentesque. Praesent tincidunt, mi in tempus commodo, lorem neque imperdiet dui, dapibus congue risus nisi sit amet dolor.</p>
+                <p>{teacher.bio}</p>
             <footer>
                 <p>Preço/hora
-                                <strong>R$ 20,00</strong>
+                                <strong>R${teacher.cost}</strong>
                 </p>
-                <button type="button">
+                <a 
+                target= "_blank" 
+                onClick={createNewConnection}
+                href={`https://wa.me/${teacher.whatsapp}`}>
                     <img src={whatsappIcon} alt="Chame no zapzap" />
                                 Entrar em contato
-                            </button>
+                </a>
             </footer>
         </article>
     );
