@@ -1,56 +1,57 @@
-import React from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { RectButton } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom';
 
-import styles from './styles';
+import logoImg from '../../assets/images/logo.svg';
+import landingImg from '../../assets/images/landing.svg';
 
-import landingImg from '../../assets/images/landing.png';
-import studyIcon from '../../assets/images/icons/study.png';
-import giveClassesIcon from '../../assets/images/icons/give-classes.png';
-import heartIcon from '../../assets/images/icons/heart.png';
+import studyIcon from '../../assets/images//icons/study.svg';
+import giveClassesIcon from '../../assets/images//icons/give-classes.svg';
+import purpleHeartIcon from '../../assets/images/icons/purple-heart.svg';
 
-function Landing() {
-    const { navigate } = useNavigation();
+import './styles.css';
+import api from '../../services/api';
 
-    function handleNavigateToGiveClassesPage() {
-        navigate('GiveClasses');
-    }
-    function handleNavigateToStudyPages() {
-        navigate('Study');
-    }
+function Landing (){
+    const [totalConnections, setTotalConnections] = useState(0);
+
+    useEffect(()=>{
+        api.get('connections').then(res =>{
+            const {total} = res.data;
+
+            setTotalConnections(total);
+        })
+    }, [])
 
     return (
-        <View style={styles.container}>
-            <Image source={landingImg} style={styles.banner}></Image>
-            <Text style={styles.title}>
-                Seja bem-vindo, {'\n'}
-                <Text style={styles.titleBold}>O que deseja fazer?</Text>
-            </Text>
-            <View style={styles.buttonsContainer}>
-                <RectButton
-                    onPress={handleNavigateToStudyPages}
-                    style={[styles.button, styles.buttonPrimary]}>
-                    <Image source={studyIcon} />
+        <div id="page-landing">
+            <div id="page-landing-content" className="container">
+                <div className="logo-container">
+                    <img src={logoImg} alt="Logo Proffy" />
+                    <h2>Sua plataforma de estudos online</h2>
+                </div>
 
-                    <Text style={styles.buttonText}>Estudar</Text>
-                </RectButton>
-                <RectButton style={[styles.button, styles.buttonSecondary]}>
-                    <Image source={giveClassesIcon} />
+                <img 
+                    src= {landingImg} 
+                    alt="Plataforma de estudos" 
+                    className="hero-image"
+                />
+                <div className="buttons-container">
+                    <Link to="/study" className="study">
+                        <img src={studyIcon} alt="Estudar"/>
+                        Estudar
+                    </Link>
+                    <Link to="/give-classes" className="give-classes">
+                        <img src={giveClassesIcon} alt="Dar Aulas"/>
+                        Dar Aulas
+                    </Link>
+                </div>
 
-                    <Text
-                        onPress={handleNavigateToGiveClassesPage}
-                        style={styles.buttonText}>Dar aulas
-                    </Text>
-                </RectButton>
-            </View>
-
-            <Text style={styles.totalConnections}>
-                Total de 285 conexões já realizadas {' '}
-                <Image source={heartIcon}></Image>
-            </Text>
-        </View>
-    );
+                <span className="total-connections">
+                    Total de {totalConnections} conexões já realizadas <img src= {purpleHeartIcon} alt="Coração"/>
+                </span>
+            </div>
+        </div>
+    )
 }
 
 export default Landing;
