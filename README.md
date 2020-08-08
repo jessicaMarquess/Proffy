@@ -28,7 +28,7 @@ O objetivo do projeto é criar uma plataforma de estudos, onde conseguimos conec
  - [Knex](http://knexjs.org/)
 - - -
 ## 📱 Versão Mobile:
-<img src='./assets/video_2020-08-07_19-19-45.gif'/>
+<img style= 'height:500px' src='./assets/video_2020-08-07_19-19-45.gif'/>
 
 - - -
 ## 💻 Versão Web
